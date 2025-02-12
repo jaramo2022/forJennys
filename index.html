@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Will You Be My Valentine?</title>
+    <style>
+      body {
+        background-color: #ffe6e6;
+        font-family: "Times New Roman", Times, serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Keeps our page neat without scrollbars */
+      }
+      h1 {
+        margin-top: 100px;
+        font-size: 3em;
+        color: #cc0000;
+      }
+      button {
+        font-size: 1.2em;
+        border: 2px solid #cc0000;
+        background-color: #fff;
+        color: #cc0000;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        position: fixed; /* Allows repositioning on the screen */
+        width: 150px;
+        height: 50px;
+        line-height: 50px; /* Vertically centers the text */
+        box-sizing: border-box; /* Ensures the border is included in the width/height */
+      }
+      button:hover {
+        background-color: #cc0000;
+        color: #fff;
+      }
+      /* Initial positions for the buttons */
+      #yesBtn {
+        bottom: 50px;
+        left: calc(50% - 170px);
+      }
+      #noBtn {
+        bottom: 50px;
+        left: calc(50% + 20px);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Will you be my Valentine?</h1>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+
+    <script>
+      // Global scaling factor for the "No" button.
+      let scale = 1;
+
+      // Get references to the buttons.
+      const noBtn = document.getElementById("noBtn");
+      const yesBtn = document.getElementById("yesBtn");
+
+      // Use addEventListener to ensure the event is bound.
+      noBtn.addEventListener("mouseover", moveAndShrinkButton);
+      yesBtn.addEventListener("click", function () {
+        window.location.href = "love.html";
+      });
+
+      function moveAndShrinkButton() {
+        // On the very first hover, store the original dimensions, font size, and border width.
+        if (!noBtn.dataset.originalWidth) {
+          noBtn.dataset.originalWidth = noBtn.offsetWidth;
+          noBtn.dataset.originalHeight = noBtn.offsetHeight;
+          const computedStyle = window.getComputedStyle(noBtn);
+          noBtn.dataset.originalFontSize = parseFloat(computedStyle.fontSize);
+          noBtn.dataset.originalBorderWidth = parseFloat(
+            computedStyle.borderWidth
+          );
+        }
+
+        // Scale down by 10%
+        scale *= 0.9;
+
+        // Calculate new dimensions and style values.
+        const originalWidth = parseFloat(noBtn.dataset.originalWidth);
+        const originalHeight = parseFloat(noBtn.dataset.originalHeight);
+        const newWidth = originalWidth * scale;
+        const newHeight = originalHeight * scale;
+
+        const originalFontSize = parseFloat(noBtn.dataset.originalFontSize);
+        const newFontSize = originalFontSize * scale;
+        const originalBorderWidth = parseFloat(
+          noBtn.dataset.originalBorderWidth
+        );
+        const newBorderWidth = originalBorderWidth * scale;
+
+        // Update the button's style so that its full box shrinks.
+        noBtn.style.width = newWidth + "px";
+        noBtn.style.height = newHeight + "px";
+        noBtn.style.lineHeight = newHeight + "px";
+        noBtn.style.fontSize = newFontSize + "px";
+        noBtn.style.borderWidth = newBorderWidth + "px";
+
+        // Calculate a random position so the button stays fully within the viewport.
+        const maxX = window.innerWidth - newWidth;
+        const maxY = window.innerHeight - newHeight;
+        const randX = Math.floor(Math.random() * maxX);
+        const randY = Math.floor(Math.random() * maxY);
+
+        noBtn.style.left = randX + "px";
+        noBtn.style.top = randY + "px";
+      }
+    </script>
+  </body>
+</html>
